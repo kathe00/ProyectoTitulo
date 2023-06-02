@@ -8,14 +8,17 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import matthews_corrcoef
 
+class KNN:
+    def __init__(self, k):
+        self.k = k
 
-def KNN(trainingData, testingData, trainingClass, testingClass, k):
+    def test(self, trainingData, testingData, trainingClass, testingClass):
         # entrenamiento del clasificador
         # con metric = 'minkowski' y p = 1 se esta utilizando la distancia de manhattan
         # con metric = 'minkowski' y p = 2 se esta utilizando la distancia euclidiana
 
         clasificador = KNeighborsClassifier(
-            n_neighbors = k,
+            n_neighbors = self.k,
             metric      = 'minkowski',
             p           = 2
         )

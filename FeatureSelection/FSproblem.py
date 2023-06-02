@@ -1,17 +1,20 @@
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from KNN.KNN import KNN
 """
-FEATURE SELECTION PROBLEM - Módulo de funciones específicas dle problema
+FEATURE SELECTION PROBLEM - Módulo de funciones específicas del problema
+
  Variables:
     - totalData: datos de la instancia
     - totalClass: clases de la instancia
     - totalFeatures: cantidad de características de la instancia
 """
 
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
+from KNN.KNN import KNN
+
+
 class FeatureSelection:
-    def __init__(self, datos, clases, totalFeatures, gamma):
+    def __init__(self, datos, clases, totalFeatures, gamma, k):
         self.totalData = datos
         self.totalClass = clases
         self.totalFeatures = totalFeatures
@@ -20,6 +23,8 @@ class FeatureSelection:
         self.testingData = None
         self.testingClass = None
         self.gamma = gamma
+        self.k = k
+
     
     def getTotalFeatures(self):
         return self.totalFeatures
@@ -43,17 +48,24 @@ class FeatureSelection:
             random_state=0
         )
     
-    def fitness(self, sol, k):
+    def fitness(self, sol):
+        # instanciar KNN
+        knn = KNN(self.k)
+
         # tomar solo las variables seleccionadas
         seleccion = np.where(sol == 1)[0]
         datos = self.totalData.iloc[:, seleccion]
+        #print("\nfsproblem")
+        #print(sol)
+        #print(seleccion)
+        #print(self.trainingData)
 
         # dividir datos (training-testing) y escalar valores
         self.dividirData(datos)
         self.escalarData()
 
         # probar KNN
-        accuracy, f1Score, presicion, recall, mcc = KNN(self.trainingData, self.testingData, self.trainingClass, self.testingClass, k)
+        accuracy, f1Score, presicion, recall, mcc = knn.test(self.trainingData, self.testingData, self.trainingClass, self.testingClass)
 
         # calcular fitness
         errorRate = np.round((1 - accuracy), decimals=3)

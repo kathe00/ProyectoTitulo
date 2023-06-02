@@ -9,25 +9,28 @@ from Metaheuristicas.AVOA import AfricanVultures
 
 # - PARÁMETROS - #
 instancia = 'ionosphere'
-tamPop = 20
-maxIter = 100
-low = 0
-high = 2
-k = 3
-gamma = 0.99
-esquema = ['S2', 'ELIT']
 
-# MFO
-ubMFO = 100
-lbMFO = 10
+datosMH = 'MFO,20,-2,2'
+paramMH = ''
+paramFS = '100,3,0.99,S2,ELIT'
 
-# AVOA
-# mh = AfricanVultures(3, 4, high, low, maxIter, 0.5, 0.5, 0.5, 0.5, 3)
-# pop = [[0,1,1,0],[0,0,1,1],[1,1,1,1]]
-# rank = [[0,0,1,1],[0,1,1,0],[1,1,1,1]]
-# mh.iterar(pop, [0.5,0.7,0.1],rank)
+bestFitMFO, bestSolMFO = solverFS(instancia, datosMH, paramMH, paramFS)
 
-solverFS(instancia, tamPop, k, gamma, maxIter, esquema, high, low, 'AVOA')
+datosMH = 'AVOA,20,-2,2'
+paramMH = '0.5,0.5,0.5,0.5,3'
+paramFS = '100,3,0.99,S2,ELIT'
+
+bestFitAVOA, bestSolAVOA = solverFS(instancia, datosMH, paramMH, paramFS)
+
+print("--------------------")
+print("-- Resultados MFO --")
+print("Best Fitness: " + str(bestFitMFO))
+print(bestSolMFO)
+print("---------------------")
+print("-- Resultados AVOA --")
+print("Best Fitness: " + str(bestFitAVOA))
+print(bestSolAVOA)
+
 # ub = 1
 # lb = -1
 # dim = 30

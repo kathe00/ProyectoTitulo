@@ -3,18 +3,18 @@ import random
 import math
  
 class AfricanVultures():
-    def __init__(self, nsa, dim, ub, lb, max_iter, rp1, rp2, rp3, l, w):
+    def __init__(self, nsa, dim, ub, lb, max_iter, param):
         # parámetros
-        self.nsa = nsa      # nro de agentes de búsqueda (buitres)
-        self.max_iter = max_iter  # máximo de iteraciones
-        self.ub = ub        # valores máximos de cada variable
-        self.lb = lb        # valores mínimos de cada variable
-        self.dim = dim      # dimensión (nro variables)
-        self.rp1 = rp1      # probabilidad 1
-        self.rp2 = rp2      # probabilidad 2
-        self.rp3 = rp3      # probabilidad 3
-        self.l = l          # parámetro l (para definir a cual buitre seguir)
-        self.w = w          # parámetro w (probabilidad de pasar entre explr y explt) (a mayor w, más explora)
+        self.nsa = nsa                        # nro de agentes de búsqueda (buitres)
+        self.max_iter = max_iter              # máximo de iteraciones
+        self.ub = ub                          # valores máximos de cada variable
+        self.lb = lb                          # valores mínimos de cada variable
+        self.dim = dim                        # dimensión (nro variables)
+        self.rp1 = float(param.split(',')[0]) # probabilidad 1
+        self.rp2 = float(param.split(',')[1]) # probabilidad 2
+        self.rp3 = float(param.split(',')[2]) # probabilidad 3
+        self.l = float(param.split(',')[3])   # parámetro l (para definir a cual buitre seguir)
+        self.w = int(param.split(',')[4])     # parámetro w (probabilidad de pasar entre explr y explt) (a mayor w, más explora)
 
     def levyFlight(self, d):  
         """

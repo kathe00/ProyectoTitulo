@@ -26,7 +26,7 @@ class Instancia:
             instancia = instancia + ".data"
             dataset = pd.read_csv('./FeatureSelection/Instancias/' + instancia, header=None)
 
-            # separamos las clases de los datos (última columna de cada instancia)
+            # separamos las clases de los datos (última columna de cada fila)
             cantAtributos = 34
             clases = dataset.iloc[:,cantAtributos]
 

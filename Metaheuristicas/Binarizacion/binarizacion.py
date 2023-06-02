@@ -4,11 +4,10 @@ from scipy import special as scyesp
 
 
 def aplicarBinarizacion(ind, transferFunction, binarizationFunction, bestSolutionBin, indBin):
-    individuoBin = []
-    for i in range(ind.__len__()):
-        individuoBin.append(0)
+    individuoBin = np.zeros(len(ind))
+    #print(bestSolutionBin)
 
-    for i in range(ind.__len__()):
+    for i in range(len(ind)):
         step1 = transferir(transferFunction, ind[i])
         individuoBin[i] = binarizar(binarizationFunction, step1, bestSolutionBin[i], indBin[i])
     return np.array(individuoBin)

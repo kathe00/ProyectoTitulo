@@ -1,3 +1,12 @@
+"""
+BENCHMARK PROBLEM
+
+Módulo con todas las funciones necesarias para ejecutar pruebas 
+benchmark, desde la F1 a F11.
+
+"""
+
+
 import numpy as np 
 import math
 
