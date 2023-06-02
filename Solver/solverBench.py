@@ -2,12 +2,13 @@ import time
 import numpy as np
 from BenchMark.benchProblem import fitness as f
 from Metaheuristicas.MFO import MothFlame
+from Metaheuristicas.AVOA import AfricanVultures
 
 
-def solverBench(pop, dim, maxIter, ub, lb, function):
+def solverBench(pop, dim, maxIter, ub, lb, function, mh):
     # INICIALIZACIÓN
     print("-----------------------------------------------------------------")
-    print("Resolviendo función ["+ function + "]")
+    print("Resolviendo función [ "+ function + " ]")
     print("-----------------------------------------------------------------")
     print(" \n- INICIALIZACIÓN -")
     print("Tamaño de población: " + str(pop))
@@ -56,12 +57,16 @@ def solverBench(pop, dim, maxIter, ub, lb, function):
     # - Moth Flame Optimization
     # instanciar metaheurística
     mfo = MothFlame(pop, dim, maxIter, ub, lb)
+    avoa = AfricanVultures(pop, dim, ub, lb, maxIter, 0.5,0.5,0.5,2,3)
 
     # Iteración principal
     for iteration in range(maxIter):
 
         # Segunda y tercera iteración (perturvar población)
-        poblacion, solutionsRanking, fitnessRanking = mfo.iterar(iteration, poblacion, fitness, solutionsRanking, fitnessRanking)
+        if( mh == 'MFO' ):
+            poblacion, solutionsRanking, fitnessRanking = mfo.iterar(iteration, poblacion, fitness, solutionsRanking, fitnessRanking)
+        if( mh == 'AVOA' ):
+            poblacion = avoa.iterar(poblacion, fitness, solutionsRanking)
 
         # cáculo del fitness
         for i in range(poblacion.__len__()):
@@ -75,7 +80,7 @@ def solverBench(pop, dim, maxIter, ub, lb, function):
         solutionsRanking, fitnessRanking = mfo.ordenarFlamas(solutionsRanking, poblacion, fitnessRanking, fitness)
         bestFitness = fitnessRanking[0]
         bestSolution = solutionsRanking[0].copy()
-        print("Iteracion " + str(iteration))
+        print("Iteracion " + str(iteration+1))
         print(" - Best Fitness: " + str(bestFitness))
 
     print(" \n- FIN OPTIMIZACIÓN -")

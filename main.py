@@ -4,13 +4,13 @@ Katherine Sepúlveda
 """
 
 from Solver.solverFS import solverFS
-from Solver.solverFS import solverBench
+from Solver.solverBench import solverBench
 from Metaheuristicas.AVOA import AfricanVultures
 
 # - PARÁMETROS - #
 instancia = 'ionosphere'
-tamPop = 10
-maxIter = 30
+tamPop = 20
+maxIter = 100
 low = 0
 high = 2
 k = 3
@@ -27,6 +27,9 @@ lbMFO = 10
 # rank = [[0,0,1,1],[0,1,1,0],[1,1,1,1]]
 # mh.iterar(pop, [0.5,0.7,0.1],rank)
 
-#solverFS(instancia, tamPop, k, gamma, maxIter, esquema, high, low)
-
+solverFS(instancia, tamPop, k, gamma, maxIter, esquema, high, low, 'AVOA')
+# ub = 1
+# lb = -1
+# dim = 30
+# solverBench(tamPop, dim, maxIter, ub, lb, 'F3','AVOA')
 

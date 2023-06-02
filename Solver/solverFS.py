@@ -3,6 +3,7 @@ import numpy as np
 from FeatureSelection.Instancia import Instancia 
 from FeatureSelection.FSproblem import FeatureSelection
 from Metaheuristicas.MFO import MothFlame
+from Metaheuristicas.AVOA import AfricanVultures
 from Metaheuristicas.Binarizacion import binarizacion
 """
 SOLVER FEATURE SELECTION - Módulo para la resolución de Feature Selection Problem
@@ -13,7 +14,7 @@ SOLVER FEATURE SELECTION - Módulo para la resolución de Feature Selection Prob
     -
 """
 
-def solverFS(instancia, pop, k, gamma, maxIter, esquema, ub, lb):
+def solverFS(instancia, pop, k, gamma, maxIter, esquema, ub, lb, mh):
     # INICIALIZACIÓN
     print("-----------------------------------------------------------------")
     print("Resolviendo la instancia ["+ instancia + "] en Feature Selection")
@@ -27,6 +28,13 @@ def solverFS(instancia, pop, k, gamma, maxIter, esquema, ub, lb):
     clases = ins.getClases()
     print("Instancia leída.")
 
+    # - instanciar límites
+    dim = len(datos.columns)
+    if not isinstance(lb, list):
+        lb = [lb] * dim
+    if not isinstance(ub, list):
+        ub = [ub] * dim
+
     # - inicializar FS
     fs = FeatureSelection(datos, clases, len(datos.columns), gamma)
     fitness = np.zeros(pop)       # fitness
@@ -39,7 +47,7 @@ def solverFS(instancia, pop, k, gamma, maxIter, esquema, ub, lb):
     totalSelected = np.zeros(pop) # cantidad de carac. seleccionadas
 
     # - primera población (todas las características)
-    poblacion = np.ones((pop, len(datos.columns)))
+    poblacion = np.ones((pop, dim))
     print("Primera población generada.")
 
     # - factibilidad y fitness
@@ -83,13 +91,17 @@ def solverFS(instancia, pop, k, gamma, maxIter, esquema, ub, lb):
 
     # - Moth Flame Optimization
     # instanciar metaheurística
-    mfo = MothFlame(pop, len(datos.columns), maxIter, ub, lb)
+    mfo = MothFlame(pop, dim, maxIter, ub, lb)
+    avoa = AfricanVultures(pop, dim, ub, lb, maxIter, 0.5,0.5,0.5,2,3)
 
     # Iteración principal
     for iteration in range(maxIter):
 
         # Segunda y tercera iteración (perturvar población)
-        poblacion, solutionsRanking, fitnessRanking = mfo.iterar(iteration, poblacion, fitness, solutionsRanking, fitnessRanking)
+        if( mh == 'MFO' ):
+            poblacion, solutionsRanking, fitnessRanking = mfo.iterar(iteration, poblacion, fitness, solutionsRanking, fitnessRanking)
+        if( mh == 'AVOA' ):
+            poblacion = avoa.iterar(poblacion, fitness, solutionsRanking)
         
         # Procesamiento FS
         for i in range(pop):
