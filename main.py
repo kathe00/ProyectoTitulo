@@ -4,8 +4,8 @@ Katherine Sepúlveda
 """
 
 from Solver.solverFS import solverFS
-from Solver.solverBench import solverBench
-from Metaheuristicas.AVOA import AfricanVultures
+#from Solver.solverBench import solverBench
+#from Metaheuristicas.AVOA import AfricanVultures
 
 # - PARÁMETROS - #
 instancia = 'ionosphere'
@@ -22,14 +22,17 @@ paramFS = '100,3,0.99,S2,ELIT'
 
 bestFitAVOA, bestSolAVOA = solverFS(instancia, datosMH, paramMH, paramFS)
 
-print("--------------------")
-print("-- Resultados MFO --")
-print("Best Fitness: " + str(bestFitMFO))
-print(bestSolMFO)
-print("---------------------")
-print("-- Resultados AVOA --")
-print("Best Fitness: " + str(bestFitAVOA))
-print(bestSolAVOA)
+if (bestFitMFO != -1):
+    print("-----------------------------------------------------------------")
+    print("----------------------- Resultados MFO --------------------------")
+    print("Best Fitness: " + str(bestFitMFO))
+    print(bestSolMFO)
+    
+if (bestFitAVOA != -1):
+    print("-----------------------------------------------------------------")
+    print("----------------------- Resultados AVOA -------------------------")
+    print("Best Fitness: " + str(bestFitAVOA))
+    print(bestSolAVOA)
 
 # ub = 1
 # lb = -1

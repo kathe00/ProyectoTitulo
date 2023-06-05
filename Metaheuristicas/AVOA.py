@@ -1,7 +1,22 @@
+"""
+AFRICAN VULTURES OPTIMIZATION (AVOA) - implementación de la metaheurística
+
+ Variables:
+    - nsa: nro de agentes de búsqueda (buitres)
+    - max_iter: máximo de iteraciones
+    - ub : valores máximos de cada variable
+    - lb : valores mínimos de cada variable
+    - dim: dimensión (nro variables)
+    - rp1: probabilidad 1 (para definir qué etapa de exploración seguir)
+    - rp2: probabilidad 2 (para definir qué etapa seguir durante la fase 1 de explotación)
+    - rp3: probabilidad 3 (para definir qué etapa seguir durante la fase 2 de explotación)
+    - l  : parámetro l (para definir a cual buitre seguir)
+    - w  : parámetro w (probabilidad de pasar entre explr y explt. A mayor w, mayor exploración)
+"""
 import numpy as np
 import random
 import math
- 
+
 class AfricanVultures():
     def __init__(self, nsa, dim, ub, lb, max_iter, param):
         # parámetros
@@ -30,7 +45,7 @@ class AfricanVultures():
         o = step;
         return o
 
-    def aux_div(self, dividendo, divisor):
+    def aux_div(self, dividendo, divisor): # para divisiones por 0
         if divisor == 0:
             division = 0
         else:
@@ -44,17 +59,13 @@ class AfricanVultures():
 
         # recorrer población 
         for i in range(self.nsa):
-            #print()
-            #print(i)
             # calcular p y elegir uno de los mejores buitres
             p = fitness[i] / sum(fitness)
-            #print("p: " + str(p))
 
             if p >= self.l:
                 bbuitre = best1.copy()
             else:
                 bbuitre = best2.copy()
-            #print("bbuitre: " + str(bbuitre))
 
             # actualizar t y z, y calcular F
             h = random.uniform(-2,2)
@@ -66,8 +77,7 @@ class AfricanVultures():
             rand = random.random()
             #print("rand: " + str(rand))
             f = ( ( (2 * rand) + 1 ) * z * ( 1 - (i / self.max_iter) ) ) + t
-            #print("F: ")
-            #print(f)
+            #print("F: " + str(f))
 
             if abs(f) >= 1:
                 # calcular p1

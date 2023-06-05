@@ -1,3 +1,9 @@
+"""
+KNN - módulo del algoritmo clasificador
+
+ Variables:
+    - k: cantidad de vecinos 
+"""
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
@@ -25,17 +31,12 @@ class KNN:
         clasificador.fit( trainingData , trainingClass )
 
         # predicción del clasificador
-
         predictionClass = clasificador.predict(testingData)
 
-
-        # cm = confusion_matrix(testingClass, predictionClass)
         accuracy    = np.round(accuracy_score(testingClass, predictionClass), decimals=3)
         f1Score     = np.round(f1_score(testingClass, predictionClass), decimals=3)
         presicion   = np.round(precision_score(testingClass, predictionClass), decimals=3)
         recall      = np.round(recall_score(testingClass, predictionClass), decimals=3)
         mcc         = np.round(matthews_corrcoef(testingClass, predictionClass), decimals=3)
 
-
-        # return cm, accuracy, f1Score, presicion, recall, mcc
         return accuracy, f1Score, presicion, recall, mcc

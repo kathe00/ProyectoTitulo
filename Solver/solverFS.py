@@ -13,7 +13,6 @@ Output:
     - bestFitness: mejor fitness encontrado
     - bestSolution: solución que obtuvo el mejor fitness
 """
-
 import time
 import numpy as np
 from FeatureSelection.Instancia import Instancia 
@@ -40,8 +39,11 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     print("-----------------------------------------------------------------")
     print("Resolviendo la instancia ["+ instancia + "] en Feature Selection")
     print("-----------------------------------------------------------------")
+    print("Metaheurística: " + mh
+          + "\nPoblación: " + str(pop)
+          + "\nIteraciones: " + str(maxIter))
+    
     print(" \n- INICIALIZACIÓN -")
-    print("Tamaño de población: " + str(pop))
 
     # - leer la instancia
     ins = Instancia()
@@ -70,7 +72,7 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
 
     # - primera población (todas las características)
     poblacion = np.ones((pop, dim))
-    print("Primera población generada.")
+    print("Primera población generada (todas las características seleccionadas).")
 
     # - fitness de la primera población
     for i in range(pop):
@@ -88,9 +90,9 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     solutionsRanking = poblacion[orden, :]    
     bestSolution = solutionsRanking[0].copy() # mejor solución
 
-    print("Mejor solución: ")
+    print("- Mejor solución: ")
     print(bestSolution)
-    print("Mejor fit: " + str(bestFitness))
+    print("- Mejor fit: " + str(bestFitness))
 
     # medidas de la mejor solución
     bestAccuracy = accuracy[mejorIdx]
@@ -101,6 +103,7 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     bestErrorRate = errorRate[mejorIdx]
     bestTFS = totalSelected[mejorIdx]
 
+    print("- Desempeño del clasificador")
     print("Accuracy: " + str(bestAccuracy)
           + "\nF1 Score: " + str(bestF1Score)
           + "\nPrecision: " + str(bestPrecision)
@@ -127,7 +130,7 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
 
     # Iteración principal
     for iteration in range(maxIter):
-        print("- Iteración " + str(iteration) + " -")
+        print("\n- Iteración " + str(iteration) + " -")
 
         # Segunda y tercera iteración (perturvar población)
         if( mh == 'MFO' ):
@@ -140,7 +143,6 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
             
             # binarizar
             poblacion[i] = binarizacion.aplicarBinarizacion(poblacion[i], funcTransf, funcBin, bestSolution, binSol[i].tolist())
-            #print(poblacion[i])
 
             # comprobar factibilidad
             while not ins.esFactible(poblacion[i]): # mientras sea infactible
@@ -178,20 +180,19 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
             bestErrorRate = errorRate[bestIndex]
             bestTFS = totalSelected[bestIndex]
 
-        print("Best Fitness: " + str(bestFitness))
-        #print(bestSolution)
-        #print(bestTFS)
+        print("Mejor fitness de la iteración: " + str(fitness[bestIndex]))
+        print("Mejor fitness histórico: " + str(bestFitness))
 
     print(" \n- FIN OPTIMIZACIÓN -")
     print("Best Fitness: " + str(bestFitness)
           + "\nBest Solution: " + str(bestSolution)
+          + "\nFeatures Selected: " + str(bestTFS)
           + "\nAccuracy: " + str(bestAccuracy)
           + "\nF1 Score: " + str(bestF1Score)
           + "\nPrecision: " + str(bestPrecision)
           + "\nRecall: " + str(bestRecall)
           + "\nMCC: " + str(bestMcc)
-          + "\nError rate: " + str(bestErrorRate)
-          + "\nFeatures Selected: " + str(bestTFS))
+          + "\nError rate: " + str(bestErrorRate))
 
     time2 = time.time()
     tiempoEjec = time2 - time1

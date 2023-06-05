@@ -1,3 +1,11 @@
+"""
+LECTURA DE INSTANCIA
+
+ Variables:
+    - datos: matriz con los datos de la instancia
+    - clases: vector con las clases de la instancia, relativas a los datos
+"""
+
 import numpy as np
 import pandas as pd
 
@@ -17,7 +25,7 @@ class Instancia:
         return self.clases
     
     def esFactible(self, sol):
-        return (np.sum(sol) > 0)
+        return (np.sum(sol) > 0) # que haya al menos un elemento seleccionado
 
     def leerInstancia(self, instancia):
         if instancia == 'ionosphere':

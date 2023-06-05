@@ -1,18 +1,28 @@
-import numpy as np
+"""
+MOTH FLAME OPTIMIZATION (MFO) - implementación de la metaheurística
 
+ Variables:
+    - nsa: nro de agentes de búsqueda (polillas)
+    - maxIter: máximo de iteraciones
+    - ub : valores máximos de cada variable
+    - lb : valores mínimos de cada variable
+    - dim: dimensión (nro variables)
+    - b  : constante definida en 1
+"""
+import numpy as np
 
 class MothFlame():
     def __init__(self, nsa, dim, maxIter, ub, lb):
         # parámetros
-        self.nsa = nsa      # nro de agentes de búsqueda (polillas)
-        self.ub = ub        # valores máximos de cada variable
-        self.lb = lb        # valores mínimos de cada variable
-        self.dim = dim      # dimensión (nro variables)
+        self.nsa = nsa
         self.maxIter = maxIter
-        self.b = 1          # parámetro b
+        self.ub = ub
+        self.lb = lb
+        self.dim = dim
+        self.b = 1
     
     def ordenarFlamas(self, flames, mothPos, flamesFit, mothFit):
-        # se comparan los valores de las polillas y las flamas, 
+        # se comparan los valores de las polillas y las flamas
         # las flamas son las mejores soluciones
 
         # juntar
@@ -31,10 +41,13 @@ class MothFlame():
         return flam, flamFit
         
     def iterar(self, iteration, poblacion, fitness, solRank, fitRank):
+
         mothPos = poblacion
         mothFit = fitness
+
         # Número de llamas, Eq. en fig. 3.12 del paper
         flameNo = int(np.ceil(self.nsa - (iteration + 1) * ((self.nsa - 1) / self.maxIter)))
+        
         # Asegurar que los valores de las polillas esten dentro de los márgenes
         mothPos = np.clip(mothPos, self.lb, self.ub)
 
