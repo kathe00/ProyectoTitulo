@@ -193,9 +193,11 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
           + "\nRecall: " + str(bestRecall)
           + "\nMCC: " + str(bestMcc)
           + "\nError rate: " + str(bestErrorRate))
+    
+    performance = [bestAccuracy,bestF1Score,bestPrecision,bestRecall,bestMcc,bestErrorRate,bestTFS]
 
     time2 = time.time()
     tiempoEjec = time2 - time1
     print("Tiempo de ejecución: " + str(tiempoEjec))
 
-    return bestFitness, bestSolution
+    return bestFitness, bestSolution, performance
