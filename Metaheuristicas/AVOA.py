@@ -21,10 +21,10 @@ class AfricanVultures():
     def __init__(self, nsa, dim, ub, lb, max_iter, param):
         # parámetros
         self.nsa = nsa                        # nro de agentes de búsqueda (buitres)
-        self.max_iter = max_iter              # máximo de iteraciones
+        self.dim = dim                        # dimensión (nro variables)
         self.ub = ub                          # valores máximos de cada variable
         self.lb = lb                          # valores mínimos de cada variable
-        self.dim = dim                        # dimensión (nro variables)
+        self.max_iter = max_iter              # máximo de iteraciones
         self.rp1 = float(param.split(',')[0]) # probabilidad 1
         self.rp2 = float(param.split(',')[1]) # probabilidad 2
         self.rp3 = float(param.split(',')[2]) # probabilidad 3
@@ -37,17 +37,17 @@ class AfricanVultures():
         https://github.com/angelinbeni/African-Vulture-Optimization
 
         """
-        beta = 3/2;
+        beta = 3/2
         sigma = (math.gamma(1+beta)*math.sin(math.pi*beta/2)/(math.gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta)
-        u = np.random.randn(1,d)*sigma;
-        v = np.random.randn(1,d);
-        step = u/abs(v)**(1/beta);
-        o = step;
+        u = np.random.randn(1,d)*sigma
+        v = np.random.randn(1,d)
+        step = u/abs(v)**(1/beta)
+        o = step
         return o
 
     def aux_div(self, dividendo, divisor): # para divisiones por 0
         if divisor == 0:
-            division = 0
+            division = dividendo / 0.0000001
         else:
             division = dividendo / divisor
         return division

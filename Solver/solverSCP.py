@@ -1,31 +1,39 @@
 import time
 import numpy as np
-from BenchMark.benchProblem import fitness as f
+from SetCovering.SCProblem import SetCovering
 from Metaheuristicas.MFO import MothFlame
 from Metaheuristicas.AVOA import AfricanVultures
+from SetCovering.leerInstancia import leerInstancia
+from Metaheuristicas.Binarizacion import binarizacion
 
 
-def solverBench(instancia, datosMH, paramMH, paramProblem):
+def solverSCP(instancia, datosMH, paramMH, paramProblem):
     # PARÁMETROS
-    funcion = instancia                     # función a resolver
     mh = datosMH.split(',')[0]              # nombre Metaheurística
     pop = int(datosMH.split(',')[1])        # tamaño de la población
     maxIter = int(paramProblem.split(',')[0]) # cantidad de iteraciones
-    dim = int(paramProblem.split(',')[1])   # dimensión del problema
     lb = int(datosMH.split(',')[2])         # lower bound
     ub = int(datosMH.split(',')[3])         # upper bound
+    funcTransf = paramProblem.split(',')[1]   # función de transferencia
+    funcBin = paramProblem.split(',')[2]      # función de binarización
+
+    inst = "http://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/" + instancia + ".txt"
 
     # INICIALIZACIÓN
     print("-----------------------------------------------------------------")
-    print("Resolviendo función [ "+ funcion + " ]")
+    print("Resolviendo función [ "+ instancia + " ]")
     print("-----------------------------------------------------------------")
     print(" \n- INICIALIZACIÓN -")
     print("Metaheurística: " + mh
           + "\nPoblación: " + str(pop)
           + "\nIteraciones: " + str(maxIter))
 
-    # - primera población 
-    poblacion = np.random.uniform(low=lb, high=ub, size = (pop, dim))
+    # - leer la instancia
+    instance = leerInstancia(inst)
+    dim = instance.columnas   # dimensión del problema
+
+    # - primera población binaria
+    poblacion = np.random.randint(low=0, high=2, size = (pop, dim))
     print("Primera población generada.")
 
     # - vector para fitness
@@ -36,13 +44,18 @@ def solverBench(instancia, datosMH, paramMH, paramProblem):
         lb = [lb] * dim
     if not isinstance(ub, list):
         ub = [ub] * dim
+    
+    # - inicializar SCP
+    scp = SetCovering(pop, ub, lb, instance.matriz_A, instance.costos, instance.columnas)
+
+    # - y factibilidad
+    for i in range(pop):
+        while not scp.solFactible(poblacion[i])[0]: # mientras sea infactible
+            #print("* Solución Infactible *")
+            poblacion[i] = scp.reparar(poblacion[i])  # reparo
 
     # - cálculo del fitness
-    for i in range(poblacion.__len__()):
-        for j in range(dim):
-            poblacion[i, j] = np.clip(poblacion[i, j], lb[j], ub[j])
-
-        fitness[i] = f(funcion, poblacion[i])
+    fitness = scp.funcionObjetivo(poblacion)
     
     print("Fitness inicial calculado, valores:")
     print(fitness)
@@ -63,6 +76,7 @@ def solverBench(instancia, datosMH, paramMH, paramProblem):
     # INICIO DE LA OPTIMIZACIÓN ----------------------------------------------------------------------------------
     print(" \n- OPTIMIZACIÓN -")
     time1 = time.time()
+    binSol = poblacion.copy() # copia de la problación (funciona como "solución anterior")
 
     # instanciar metaheurística
     if (mh == 'MFO'):
@@ -84,15 +98,20 @@ def solverBench(instancia, datosMH, paramMH, paramProblem):
             poblacion, flames, flamesFit = mfo.iterar(iteration, poblacion, fitness, flames, flamesFit)
         if( mh == 'AVOA' ):
             poblacion = avoa.iterar(poblacion, fitness, solutionsRanking)
-
-        poblacion = np.clip(poblacion, lb, ub)
         
-        # cáculo del fitness
-        for i in range(poblacion.__len__()):
-            for j in range(dim):
-                poblacion[i, j] = np.clip(poblacion[i, j], lb[j], ub[j])            
+        poblacion = np.clip(poblacion, lb, ub)
 
-            fitness[i] = f(funcion, poblacion[i])
+        for i in range(pop):
+            # binarizar
+            poblacion[i] = binarizacion.aplicarBinarizacion(poblacion[i], funcTransf, funcBin, bestSolution, binSol[i].tolist())
+
+            # comprobar factibilidad
+            while not scp.solFactible(poblacion[i])[0]: # mientras sea infactible
+                #print("* Solución Infactible *")
+                poblacion[i] = scp.reparar(poblacion[i])  # reparo
+            
+        # calcular fitness
+        fitness = scp.funcionObjetivo(poblacion)
         
         # obtener rankings de la iteracion
         order = fitness.argsort(axis=0)

@@ -36,15 +36,14 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     funcBin = paramFS.split(',')[4]      # función de binarización
 
     # INICIALIZACIÓN
-    print("-----------------------------------------------------------------")
+    print("\n-----------------------------------------------------------------")
     print("Resolviendo la instancia ["+ instancia + "] en Feature Selection")
     print("-----------------------------------------------------------------")
+    print(" \n- INICIALIZACIÓN -")
     print("Metaheurística: " + mh
           + "\nPoblación: " + str(pop)
           + "\nIteraciones: " + str(maxIter))
     
-    print(" \n- INICIALIZACIÓN -")
-
     # - leer la instancia
     ins = Instancia()
     ins.leerInstancia(instancia)
@@ -72,7 +71,7 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
 
     # - primera población (todas las características)
     poblacion = np.ones((pop, dim))
-    print("Primera población generada (todas las características seleccionadas).")
+    print("Primera población generada (aleatoria).")
 
     # - fitness de la primera población
     for i in range(pop):
@@ -126,17 +125,19 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
         avoa = AfricanVultures(pop, dim, ub, lb, maxIter, paramMH)
     else:
         print("\nNo se ha encontrado una metaheurística con el nombre " + mh + ".")
-        return -1, []
+        return -1, [], []
 
     # Iteración principal
     for iteration in range(maxIter):
-        print("\n- Iteración " + str(iteration) + " -")
+        print("\n- Iteración " + str(iteration+1) + " -")
 
         # Segunda y tercera iteración (perturvar población)
         if( mh == 'MFO' ):
             poblacion, flames, flamesFit = mfo.iterar(iteration, poblacion, fitness, flames, flamesFit)
         if( mh == 'AVOA' ):
             poblacion = avoa.iterar(poblacion, fitness, solutionsRanking)
+        
+        poblacion = np.clip(poblacion, lb, ub)
         
         # Procesamiento FS
         for i in range(pop):
@@ -152,8 +153,8 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
             # calcular fitness
             fitness[i], accuracy[i], f1Score[i], precision[i], recall[i], mcc[i], errorRate[i], totalSelected[i] = fs.fitness(poblacion[i])
 
+            # actualizamos el ranking
             if (fitness[i] < bestFitness):
-                # actualizamos el ranking
                 # - agregamos el nuevo mejor
                 fitnessRanking = np.insert(fitnessRanking, 0, fitness[i]) 
                 solutionsRanking = np.insert(solutionsRanking, 0, poblacion[i], axis=0)
@@ -183,21 +184,9 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
         print("Mejor fitness de la iteración: " + str(fitness[bestIndex]))
         print("Mejor fitness histórico: " + str(bestFitness))
 
-    print(" \n- FIN OPTIMIZACIÓN -")
-    print("Best Fitness: " + str(bestFitness)
-          + "\nBest Solution: " + str(bestSolution)
-          + "\nFeatures Selected: " + str(bestTFS)
-          + "\nAccuracy: " + str(bestAccuracy)
-          + "\nF1 Score: " + str(bestF1Score)
-          + "\nPrecision: " + str(bestPrecision)
-          + "\nRecall: " + str(bestRecall)
-          + "\nMCC: " + str(bestMcc)
-          + "\nError rate: " + str(bestErrorRate))
-    
-    performance = [bestAccuracy,bestF1Score,bestPrecision,bestRecall,bestMcc,bestErrorRate,bestTFS]
-
     time2 = time.time()
     tiempoEjec = time2 - time1
-    print("Tiempo de ejecución: " + str(tiempoEjec))
+    
+    performance = [bestAccuracy,bestF1Score,bestPrecision,bestRecall,bestMcc,bestErrorRate,bestTFS,tiempoEjec]
 
     return bestFitness, bestSolution, performance

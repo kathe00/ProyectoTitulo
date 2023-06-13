@@ -1,57 +1,64 @@
 """
 PROYECTO DE TÍTULO - INGENIERÍA DE EJECUCIÓN INFORMÁTICA 2023
 Katherine Sepúlveda
+
+Módulo principal para la ejecución de experimentos.
+Parámetros:
+    - repeticiones: número de repeticiones del experimento
+    - problema: nombre que identifica al problema
+                'FS'  -> Feature Selection
+                'SCP' -> Set Covering Problem
+                'BM'  -> Benchmark
+    - instancia: nombre de la instancia del problema
+    - paramProblema: parámetros específicos del problema
+    - datosMFO: datos específicos de Moth Flame Optimization -> 'nombre,población,lowerBound,upperBound'
+                - MFO no tiene parámetros específicos
+    - datosAVOA: datos específicos de African Vultures Optimization -> 'nombre,población,lowerBound,upperBound'
+    - paramAVOA: parámetros específicos de AVOA -> 'rp1,rp2,rp3,l,w'
 """
+from Solver.solver import FeatureSelection
+from Solver.solver import BenchMark
+from Solver.solver import SetCoveringProblem
 
-from Solver.solverFS import solverFS
-#from Solver.solverBench import solverBench
-#from Metaheuristicas.AVOA import AfricanVultures
+# ----------------------------------------------------------------------------------- #
+# ---------------------------------- EXPERIMETOS ------------------------------------ #
 
-# - PARÁMETROS - #
-instancia = 'ionosphere'
+# -- PARÁMETROS CONFIGURABLES
 
-datosMH = 'MFO,20,-2,2'
-paramMH = ''
-paramFS = '10,3,0.99,S2,ELIT'
+# - Parámetros Experimento
+repeticiones = 1
+problema = 'SCP'
 
-bestFitMFO, bestSolMFO, performanceMFO = solverFS(instancia, datosMH, paramMH, paramFS)
+# - Parámetros Problema 
+# - descomentar solo el correspondiente al problema a resolver
 
-datosMH = 'AVOA,20,-2,2'
-paramMH = '0.5,0.5,0.5,0.5,3'
-paramFS = '10,3,0.99,S2,ELIT'
+## Feature Selection
+#instancia = 'ionosphere'
+#paramProblem = '10,3,0.99,S2,ELIT' # -> 'maxIter,k,gamma,funcTransferencia,tipoBinarización'
 
-bestFitAVOA, bestSolAVOA, performanceAVOA = solverFS(instancia, datosMH, paramMH, paramFS)
+## Benchmark
+#instancia = 'F3'
+#paramProblem = '600,30' # -> 'maxIter,cantDimensiones'
 
-if (bestFitMFO != -1):
-    print("-----------------------------------------------------------------")
-    print("----------------------- Resultados MFO --------------------------")
-    print("Best Fitness: " + str(bestFitMFO))
-    print(bestSolMFO)
-    print("Desempeño del clasificador:")
-    print("Accuracy: " + str(performanceMFO[0])
-          + "\nF1 Score: " + str(performanceMFO[1])
-          + "\nPrecision: " + str(performanceMFO[2])
-          + "\nRecall" + str(performanceMFO[3])
-          + "\nMCC: " + str(performanceMFO[4])
-          + "\nError Rate: " + str(performanceMFO[5])
-          + "\nCant. Features Selected: " + str(performanceMFO[6]))
-    
-if (bestFitAVOA != -1):
-    print("-----------------------------------------------------------------")
-    print("----------------------- Resultados AVOA -------------------------")
-    print("Best Fitness: " + str(bestFitAVOA))
-    print(bestSolAVOA)
-    print("Desempeño del clasificador:")
-    print("Accuracy: " + str(performanceAVOA[0])
-          + "\nF1 Score: " + str(performanceAVOA[1])
-          + "\nPrecision: " + str(performanceAVOA[2])
-          + "\nRecall" + str(performanceAVOA[3])
-          + "\nMCC: " + str(performanceAVOA[4])
-          + "\nError Rate: " + str(performanceAVOA[5])
-          + "\nCant. Features Selected: " + str(performanceAVOA[6]))
+# SetCovering
+instancia = 'scp41'
+paramProblem = '100,S1,ELIT' # -> 'maxIter,funcTransferencia,tipoBinarización'
 
-# ub = 1
-# lb = -1
-# dim = 30
-# solverBench(tamPop, dim, maxIter, ub, lb, 'F3','AVOA')
+# - Parámetros Metaheurísticas
+datosMFO = 'MFO,50,-5,5'
+
+datosAVOA = 'AVOA,20,-5,5'
+paramAVOA = '0.5,0.8,0.5,0.7,4'
+
+# EJECUCIÓN
+for i in range(repeticiones):
+    if (problema == 'FS'):
+        FeatureSelection(instancia, datosMFO, '', paramProblem) # MFO
+        #FeatureSelection(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+    if (problema == 'BM'):
+        #BenchMark(instancia, datosMFO, '', paramProblem) # MFO
+        BenchMark(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+    if (problema == 'SCP'):
+        SetCoveringProblem(instancia, datosMFO, '', paramProblem) # MFO
+        #SetCoveringProblem(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
 
