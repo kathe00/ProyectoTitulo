@@ -75,6 +75,9 @@ def solverBench(instancia, datosMH, paramMH, paramProblem):
         print("\nNo se ha encontrado una metaheurística con el nombre " + mh + ".")
         return -1, [], []
 
+    # Inicializar curva de convergencia
+    convergenceCurve = np.zeros(shape=(maxIter))
+
     # Iteración principal
     for iteration in range(maxIter):
         print("\n- Iteración " + str(iteration+1) + " -")
@@ -107,10 +110,12 @@ def solverBench(instancia, datosMH, paramMH, paramProblem):
         
         print("Mejor fitness de la iteración: " + str(fitnessRanking[0]))
         print("Mejor fitness histórico: " + str(bestFitness))
+        
+        convergenceCurve[iteration] = bestFitness
 
     time2 = time.time()
     tiempoEjec = time2 - time1
     
     performance = [tiempoEjec]
 
-    return bestFitness, bestSolution, performance
+    return bestFitness, bestSolution, performance, convergenceCurve

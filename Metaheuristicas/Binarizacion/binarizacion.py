@@ -24,55 +24,55 @@ def aplicarBinarizacion(ind, transferFunction, binarizationFunction, bestSolutio
 
     return np.array(individuoBin)
 
-def transferir(transferFunction, dimension):
+def transferir(transferFunction, valor):
 
     if transferFunction == "S1":
-        return np.divide( 1 , ( 1 + np.exp( -2 * dimension ) ) )
+        return np.divide( 1 , ( 1 + np.exp( -2 * valor ) ) )
     
     if transferFunction == "S2":
-        return np.divide( 1 , ( 1 + np.exp( -1 * dimension ) ) )
+        return np.divide( 1 , ( 1 + np.exp( -1 * valor ) ) )
     
     if transferFunction == "S3":
-        return np.divide( 1 , ( 1 + np.exp( np.divide( ( -1 * dimension ) , 2 ) ) ) )
+        return np.divide( 1 , ( 1 + np.exp( np.divide( ( -1 * valor ) , 2 ) ) ) )
     
     if transferFunction == "S4":
-        return np.divide( 1 , ( 1 + np.exp( np.divide( ( -1 * dimension ) , 3 ) ) ) )
+        return np.divide( 1 , ( 1 + np.exp( np.divide( ( -1 * valor ) , 3 ) ) ) )
     
     if transferFunction == "V1":
-        return np.abs( scyesp.erf( np.divide( np.sqrt( np.pi ) , 2 ) * dimension ) )
+        return np.abs( scyesp.erf( np.divide( np.sqrt( np.pi ) , 2 ) * valor ) )
     
     if transferFunction == "V2":
-        return np.abs( np.tanh( dimension ) )
+        return np.abs( np.tanh( valor ) )
     
     if transferFunction == "V3":
-        return np.abs( np.divide( dimension , np.sqrt( 1 + np.power( dimension , 2 ) ) ) )
+        return np.abs( np.divide( valor , np.sqrt( 1 + np.power( valor , 2 ) ) ) )
     
     if transferFunction == "V4":
-        return np.abs( np.divide( 2 , np.pi ) * np.arctan( np.divide( np.pi , 2 ) * dimension ) )
+        return np.abs( np.divide( 2 , np.pi ) * np.arctan( np.divide( np.pi , 2 ) * valor ) )
     
     if transferFunction == "X1":
-        return np.divide( 1 , ( 1 + np.exp( 2 * dimension ) ) )
+        return np.divide( 1 , ( 1 + np.exp( 2 * valor ) ) )
     
     if transferFunction == "X2":
-        return np.divide( 1 , ( 1 + np.exp( dimension ) ) )
+        return np.divide( 1 , ( 1 + np.exp( valor ) ) )
     
     if transferFunction == "X3":
-        return np.divide( 1 , ( 1 + np.exp( np.divide( dimension , 2 ) ) ) )
+        return np.divide( 1 , ( 1 + np.exp( np.divide( valor , 2 ) ) ) )
     
     if transferFunction == "X4":
-        return np.divide( 1 , ( 1 + np.exp( np.divide( dimension , 3 ) ) ) )
+        return np.divide( 1 , ( 1 + np.exp( np.divide( valor , 3 ) ) ) )
     
     if transferFunction == "Z1":
-        return np.power( ( 1 - np.power( 2 , dimension ) ) , 0.5 )
+        return np.power( ( 1 - np.power( 2 , valor ) ) , 0.5 )
     
     if transferFunction == "Z2":
-        return np.power( ( 1 - np.power( 5 , dimension ) ) , 0.5 )
+        return np.power( ( 1 - np.power( 5 , valor ) ) , 0.5 )
     
     if transferFunction == "Z3":
-        return np.power( ( 1 - np.power( 8 , dimension ) ) , 0.5 )
-    
+        return np.power( ( 1 - np.power( 8 , valor ) ) , 0.5 )
+
     if transferFunction == "Z4":
-        return np.power( ( 1 - np.power( 20 , dimension ) ) , 0.5 )
+        return np.power( ( 1 - np.power( 20 , valor ) ) , 0.5 )
 
 
 def binarizar(binarizationFunction, step1, bestBin, indBin):

@@ -126,6 +126,9 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     else:
         print("\nNo se ha encontrado una metaheurística con el nombre " + mh + ".")
         return -1, [], []
+    
+    # inicializar curva de convergencia
+    convergenceCurve = np.zeros(shape=(maxIter))
 
     # Iteración principal
     for iteration in range(maxIter):
@@ -184,9 +187,11 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
         print("Mejor fitness de la iteración: " + str(fitness[bestIndex]))
         print("Mejor fitness histórico: " + str(bestFitness))
 
+        convergenceCurve[iteration] = bestFitness
+
     time2 = time.time()
     tiempoEjec = time2 - time1
     
     performance = [bestAccuracy,bestF1Score,bestPrecision,bestRecall,bestMcc,bestErrorRate,bestTFS,tiempoEjec]
 
-    return bestFitness, bestSolution, performance
+    return bestFitness, bestSolution, performance, convergenceCurve

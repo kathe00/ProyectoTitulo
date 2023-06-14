@@ -89,7 +89,7 @@ class AfricanVultures():
                     for j in range(self.dim):
                         di = abs((x * bbuitre[j]) - poblacion[i][j])
                         poblacion[i][j] = bbuitre[j] - (di * f)
-                    #print("buitre -Exploración E1- : ")
+                    #print("Exploración E1")
                     #print(poblacion[i])
                 else:
                     # Actualizar posición según eq. 3.12
@@ -97,7 +97,7 @@ class AfricanVultures():
                     for j in range(self.dim):
                         rand3 = random.random()
                         poblacion[i][j] = bbuitre[j] - f + (rand2 * ((self.ub[j] - self.lb[j]) * rand3 + self.lb[j]))
-                    #print("buitre -Exploración E2- : ")
+                    #print("Exploración E2")
                     #print(poblacion[i])
             else:
                 if abs(f) >= 0.5:
@@ -111,7 +111,7 @@ class AfricanVultures():
                             di = abs((x * bbuitre[j]) - poblacion[i][j])
                             dt = bbuitre[j] - poblacion[i][j]
                             poblacion[i][j] = (di * (f + rand4)) - dt
-                        #print("buitre -Explotación F1E1- : ")
+                        #print("Explotación F1E1")
                         #print(poblacion[i])
                     else:
                         # Actualizar posición según eq. 3.17
@@ -121,7 +121,7 @@ class AfricanVultures():
                             s1 = bbuitre[j] * ((rand5 * poblacion[i][j]) / 2 * math.pi) * math.cos(poblacion[i][j])
                             s2 = bbuitre[j] * ((rand6 * poblacion[i][j]) / 2 * math.pi) * math.sin(poblacion[i][j])
                             poblacion[i][j] = bbuitre[j] - (s1 + s2)
-                        #print("buitre -Explotación F1E2- : ")
+                        #print("Explotación F1E2")
                         #print(poblacion[i])
                 else:
                     # buitre hambriento
@@ -142,7 +142,7 @@ class AfricanVultures():
                             a2 = best2[j] - ( aux_division * f )
 
                             poblacion[i][j] = (a1 + a2) / 2
-                        #print("buitre -Explotación F2E1- : ")
+                        #print("Explotación F2E1")
                         #print(poblacion[i])
                     else:
                         # Actualizar posición según eq. 3.17
@@ -150,7 +150,7 @@ class AfricanVultures():
                         for j in range(self.dim):
                             dt = bbuitre[j] - poblacion[i][j]
                             poblacion[i] = bbuitre[j] - ( abs(dt) * f * lf )
-                        #print("buitre -Explotación F2E2- : ")
+                        #print("Explotación F2E2")
                         #print(poblacion[i])
             
         return poblacion

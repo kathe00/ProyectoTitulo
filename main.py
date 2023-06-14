@@ -25,11 +25,11 @@ from Solver.solver import SetCoveringProblem
 
 # -- PARÁMETROS CONFIGURABLES
 
-# - Parámetros Experimento
+# --- Parámetros Experimento ---
 repeticiones = 1
 problema = 'SCP'
 
-# - Parámetros Problema 
+# --- Parámetros Problema ---
 # - descomentar solo el correspondiente al problema a resolver
 
 ## Feature Selection
@@ -41,16 +41,16 @@ problema = 'SCP'
 #paramProblem = '600,30' # -> 'maxIter,cantDimensiones'
 
 # SetCovering
-instancia = 'scp41'
-paramProblem = '100,S1,ELIT' # -> 'maxIter,funcTransferencia,tipoBinarización'
+instancia = 'scp51'
+paramProblem = '50,V4,STD' # -> 'maxIter,funcTransferencia,tipoBinarización'
 
-# - Parámetros Metaheurísticas
-datosMFO = 'MFO,50,-5,5'
+# --- Parámetros Metaheurísticas ---
+datosMFO = 'MFO,15,-1,1'
 
-datosAVOA = 'AVOA,20,-5,5'
-paramAVOA = '0.5,0.8,0.5,0.7,4'
+datosAVOA = 'AVOA,15,-5,5'
+paramAVOA = '0.9,0.9,0.9,2,3'
 
-# EJECUCIÓN
+# -- EJECUCIÓN
 for i in range(repeticiones):
     if (problema == 'FS'):
         FeatureSelection(instancia, datosMFO, '', paramProblem) # MFO
@@ -59,6 +59,6 @@ for i in range(repeticiones):
         #BenchMark(instancia, datosMFO, '', paramProblem) # MFO
         BenchMark(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
     if (problema == 'SCP'):
-        SetCoveringProblem(instancia, datosMFO, '', paramProblem) # MFO
-        #SetCoveringProblem(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+        #SetCoveringProblem(instancia, datosMFO, '', paramProblem) # MFO
+        SetCoveringProblem(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
 

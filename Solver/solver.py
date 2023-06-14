@@ -6,11 +6,15 @@ Módulo para la resolución de los problemas implementados en el proyecto
 from Solver.solverFS import solverFS
 from Solver.solverBench import solverBench
 from Solver.solverSCP import solverSCP
+import matplotlib.pyplot as plt
 
 # ------------------------------ FEATURE SELECTION ------------------------------ #
 def FeatureSelection(instancia, datosMH, paramMH, paramProblem):
     # - EJECUCIÓN -
-    bestFit, bestSol, performance = solverFS(instancia, datosMH, paramMH, paramProblem)
+    bestFit, bestSol, performance, curvaConvergencia = solverFS(instancia, datosMH, paramMH, paramProblem)
+    #
+    plt.plot(range(len(curvaConvergencia)), curvaConvergencia)
+    plt.show()
 
     # - RESULTADOS -
     if (bestFit != -1):
@@ -30,8 +34,10 @@ def FeatureSelection(instancia, datosMH, paramMH, paramProblem):
         
 def BenchMark(instancia, datosMH, paramMH, paramProblem):
     # - EJECUCIÓN -
-    bestFit, bestSol, performance = solverBench(instancia, datosMH, paramMH, paramProblem)
-
+    bestFit, bestSol, performance, curvaConvergencia = solverBench(instancia, datosMH, paramMH, paramProblem)
+    #
+    plt.plot(range(len(curvaConvergencia)), curvaConvergencia)
+    plt.show()
     # - RESULTADOS -
     if (bestFit != -1):
         print("\n-----------------------------------------------------------------")
@@ -42,8 +48,10 @@ def BenchMark(instancia, datosMH, paramMH, paramProblem):
 
 def SetCoveringProblem(instancia, datosMH, paramMH, paramProblem):
     # - EJECUCIÓN -
-    bestFit, bestSol, performance = solverSCP(instancia, datosMH, paramMH, paramProblem)
-
+    bestFit, bestSol, performance, curvaConvergencia = solverSCP(instancia, datosMH, paramMH, paramProblem)
+    #
+    plt.plot(range(len(curvaConvergencia)), curvaConvergencia)
+    plt.show()
     # - RESULTADOS -
     if (bestFit != -1):
         print("\n-----------------------------------------------------------------")
