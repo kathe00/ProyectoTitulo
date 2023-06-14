@@ -5,6 +5,7 @@ from Metaheuristicas.MFO import MothFlame
 from Metaheuristicas.AVOA import AfricanVultures
 from SetCovering.leerInstancia import leerInstancia
 from Metaheuristicas.Binarizacion import binarizacion
+from Solver.diversidad import porcentajesXPLXPT, diversidadHussain
 
 
 def solverSCP(instancia, datosMH, paramMH, paramProblem):
@@ -35,6 +36,10 @@ def solverSCP(instancia, datosMH, paramMH, paramProblem):
     # - primera población binaria
     poblacion = np.random.randint(low=0, high=2, size = (pop, dim))
     print("Primera población generada.")
+
+    # - cálculo de la diversidad
+    maxDiversidad = diversidadHussain(poblacion)
+    XPL , XPT, state = porcentajesXPLXPT(maxDiversidad, maxDiversidad)
 
     # - vector para fitness
     fitness = np.zeros(pop)
@@ -92,6 +97,9 @@ def solverSCP(instancia, datosMH, paramMH, paramProblem):
     # Inicializar curva de convergencia
     convergenceCurve = np.zeros(shape=(maxIter))
 
+    # Inicializar grafico de exploración vs explotación
+    graficoExpl = np.zeros(shape=(maxIter,2))
+
     # Iteración principal
     for iteration in range(maxIter):
         print("\n- Iteración " + str(iteration+1) + " -")
@@ -131,6 +139,19 @@ def solverSCP(instancia, datosMH, paramMH, paramProblem):
         print("Mejor fitness de la iteración: " + str(fitnessRanking[0]))
         print("Mejor fitness histórico: " + str(bestFitness))
 
+        # calcular diversidad y porcentajes XPL XPT de la iteración
+        divIter = diversidadHussain(poblacion)
+
+        if maxDiversidad < divIter:
+            maxDiversidad = divIter
+
+        XPL , XPT, state = porcentajesXPLXPT(divIter, maxDiversidad)
+
+        # guardar para el gráfico
+        graficoExpl[iteration][0] = XPL
+        graficoExpl[iteration][1] = XPT
+
+        # guardo el valor para la curva de convergencia
         convergenceCurve[iteration] = bestFitness
 
     time2 = time.time()
@@ -138,4 +159,4 @@ def solverSCP(instancia, datosMH, paramMH, paramProblem):
     
     performance = [tiempoEjec]
 
-    return bestFitness, bestSolution, performance, convergenceCurve
+    return bestFitness, bestSolution, performance, convergenceCurve, graficoExpl

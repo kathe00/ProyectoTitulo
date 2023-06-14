@@ -42,13 +42,13 @@ problema = 'SCP'
 
 # SetCovering
 instancia = 'scp51'
-paramProblem = '50,V4,STD' # -> 'maxIter,funcTransferencia,tipoBinarización'
+paramProblem = '20,V4,COM' # -> 'maxIter,funcTransferencia,tipoBinarización'
 
 # --- Parámetros Metaheurísticas ---
 datosMFO = 'MFO,15,-1,1'
 
 datosAVOA = 'AVOA,15,-5,5'
-paramAVOA = '0.9,0.9,0.9,2,3'
+paramAVOA = '0.9,0.9,0.9,2,3' # -> 'rp1,rp2,rp3,l,w'
 
 # -- EJECUCIÓN
 for i in range(repeticiones):

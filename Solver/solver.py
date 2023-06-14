@@ -11,9 +11,22 @@ import matplotlib.pyplot as plt
 # ------------------------------ FEATURE SELECTION ------------------------------ #
 def FeatureSelection(instancia, datosMH, paramMH, paramProblem):
     # - EJECUCIÓN -
-    bestFit, bestSol, performance, curvaConvergencia = solverFS(instancia, datosMH, paramMH, paramProblem)
-    #
+    bestFit, bestSol, performance, curvaConvergencia, graficoExpl = solverFS(instancia, datosMH, paramMH, paramProblem)
+
+    # curva convergencia
     plt.plot(range(len(curvaConvergencia)), curvaConvergencia)
+    plt.show()
+
+    # exploración y explotación
+    xpl = graficoExpl[:, 0]
+    xpt = graficoExpl[:, 1]
+
+    fig, ax = plt.subplots()
+
+    ax.plot(xpl, label='Exploración')
+    ax.plot(xpt, label='Explotación')
+
+    ax.legend()
     plt.show()
 
     # - RESULTADOS -
@@ -48,9 +61,22 @@ def BenchMark(instancia, datosMH, paramMH, paramProblem):
 
 def SetCoveringProblem(instancia, datosMH, paramMH, paramProblem):
     # - EJECUCIÓN -
-    bestFit, bestSol, performance, curvaConvergencia = solverSCP(instancia, datosMH, paramMH, paramProblem)
-    #
+    bestFit, bestSol, performance, curvaConvergencia, graficoExpl = solverSCP(instancia, datosMH, paramMH, paramProblem)
+
+    # curva convergencia
     plt.plot(range(len(curvaConvergencia)), curvaConvergencia)
+    plt.show()
+
+    # exploración y explotación
+    xpl = graficoExpl[:, 0]
+    xpt = graficoExpl[:, 1]
+
+    fig, ax = plt.subplots()
+
+    ax.plot(xpl, label='Exploración')
+    ax.plot(xpt, label='Explotación')
+
+    ax.legend()
     plt.show()
     # - RESULTADOS -
     if (bestFit != -1):

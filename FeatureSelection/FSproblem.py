@@ -16,7 +16,7 @@ FEATURE SELECTION PROBLEM - Módulo de funciones específicas del problema
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
-from KNN.KNN import KNN
+from FeatureSelection.Clasificadores.KNN import KNN
 
 
 class FeatureSelection:
