@@ -14,4 +14,4 @@ El presente programa fue creado de manera modular, buscando ser fácilmente modi
 
 ### Ejecución del programa
 
-El programa se ejecuta a travez del archivo principal "main.py". Los resultados obtenidos junto a los gráficos de rendimiento generados son guardados en la carpeta "Resultados".
+El programa se ejecuta a travez del archivo principal "main.py", en este mismo archivo pueden ser cambiados los parámetros de la ejecución para probar las diferentes instancias, problemas y metaheurísticas implementadas. Los resultados obtenidos junto a los gráficos de rendimiento generados son guardados en la carpeta "Resultados".
