@@ -1,3 +1,18 @@
+"""
+SOLVER SET COVERING PROBLEM
+Módulo para la resolución de Set Covering Problem
+
+Input: 
+    - instancia: nombre de la instancia a resolver
+    - datosMH: parámetros generales para la metaheurística ([nombre],[tamaño poblacion],[límite inferior],[límite superior])
+    - paramMH: parámetros específicos de la metaheurística
+                Si 'MFO': ([])
+                Si 'AVOA': ([rp1],[rp2],[rp3],[l],[w])
+    - paramFS: parámetros específicos de Feature Selection ([maxIteraciones],[función transf.],[tipo binarizacion])
+Output:
+    - bestFitness: mejor fitness encontrado
+    - bestSolution: solución que obtuvo el mejor fitness
+"""
 import time
 import numpy as np
 from SetCovering.SCProblem import SetCovering
@@ -30,7 +45,8 @@ def solverSCP(instancia, datosMH, paramMH, paramProblem):
           + "\nIteraciones: " + str(maxIter))
 
     # - leer la instancia
-    instance = leerInstancia(inst)
+    instance = leerInstancia()
+    instance.leerArchivo(inst)
     dim = instance.columnas   # dimensión del problema
 
     # - primera población binaria

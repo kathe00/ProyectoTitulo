@@ -6,9 +6,10 @@ Funciones generales
 from datetime import datetime
 import os
 
-def crearDirectorio():
+def crearDirectorio(problema):
     # formato fecha
     fecha = datetime.now().strftime("%d%m%Y_%H%M%S")
+    fecha = problema + "_" + fecha
 
     # crear nueva carpeta
     directorio = "./Resultados/" + fecha

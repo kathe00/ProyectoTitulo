@@ -6,13 +6,13 @@ response = urlopen('http://python.org/')
 
 class leerInstancia():
 
-  filas = 0 # cantidad de filas (restricciones)
-  columnas = 0 # cantidad de columnas (variables)
-  costos = [] # vector de costos de asignación por columna
-  matriz_A = [] # matriz de cobertura
+  def __init__(self):
+    self.filas = 0 # cantidad de filas (restricciones)
+    self.columnas = 0 # cantidad de columnas (variables)
+    self.costos = [] # vector de costos de asignación por columna
+    self.matriz_A = [] # matriz de cobertura
 
-  def __init__(self, ruta:str):
-
+  def leerArchivo(self, ruta:str):
     # Leer
     print(f"Leyendo archivo {ruta} ...")
     
@@ -74,13 +74,6 @@ class leerInstancia():
           fil_m+=1
           cov = []
           flag = True
-
-
-    # - Lectura de la matriz:
-    # Los index de filas van del 0 al 199 y de las columnas del 0 a 999 (en scp41)
-    # si me pregunto, por ejemplo, "La restriccion 1 es cubierta por la variable 91?"
-    # sería: "la fila 0 tiene un 1 en la columna 90?"
-    # entonces, hay que comprobar que matriz_A[0,90] sea = 1
       
 
   # función para convertir valores en int y eliminar vacíos

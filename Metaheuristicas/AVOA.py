@@ -33,7 +33,7 @@ class AfricanVultures():
 
     def levyFlight(self, d):  
         """
-        Tomado de
+        LevyFlight definition by
         https://github.com/angelinbeni/African-Vulture-Optimization
 
         """
@@ -47,7 +47,7 @@ class AfricanVultures():
 
     def aux_div(self, dividendo, divisor): # para divisiones por 0
         if divisor == 0:
-            division = dividendo / 0.0000001
+            division = dividendo / 0.000000001
         else:
             division = dividendo / divisor
         return division

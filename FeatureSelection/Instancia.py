@@ -85,20 +85,25 @@ class Instancia:
             self.clases = clases
             self.datos = datos
 
-        elif instancia == 'ARCENE':
+        elif instancia == 'ARCENE' or 'DOROTHEA' or 'MADELON':
+
+            ruta = "./FeatureSelection/Instancias/" + instancia + "/" + instancia.lower()
+
+            if instancia == 'ARCENE': cantAtributos = 10000
+            elif instancia == 'DOROTHEA': cantAtributos = 100000
+            else: cantAtributos = 500 # MADELON
 
             # juntamos los archvos de train y valid
-            aux_dataset = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_train.data', header=None, sep=' ')
-            aux_dataset2 = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_valid.data', header=None, sep=' ')
+            aux_dataset = pd.read_csv(ruta+'_train.data', header=None, sep=' ')
+            aux_dataset2 = pd.read_csv(ruta+'_valid.data', header=None, sep=' ')
             dataset = pd.concat([aux_dataset,aux_dataset2])
             
             # quitamos la columna final (NaN)
-            cantAtributos = 10000
             dataset = dataset.drop(dataset.columns[cantAtributos],axis='columns')
 
             # leemos las clases
-            aux_clases = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_train.labels', header=None, sep=' ')
-            aux_clases2 = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_valid.labels', header=None, sep=' ')
+            aux_clases = pd.read_csv(ruta+'_train.labels', header=None, sep=' ')
+            aux_clases2 = pd.read_csv(ruta+'_valid.labels', header=None, sep=' ')
             clases = pd.concat([aux_clases,aux_clases2])
 
             clases = clases.iloc[:,0]
@@ -111,3 +116,4 @@ class Instancia:
             # guardamos la instancia
             self.clases = clases
             self.datos = dataset
+            
