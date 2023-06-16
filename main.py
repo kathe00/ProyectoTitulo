@@ -46,14 +46,14 @@ paramProblem = '10,10,0.9999,V4,STD' # -> 'maxIter,k,gamma,funcTransferencia,tip
 #paramProblem = '20,V4,COM' # -> 'maxIter,funcTransferencia,tipoBinarización'
 
 # --- Parámetros Metaheurísticas ---
-datosMFO = 'MFO,15,-10,10'
+datosMFO = 'MFO,15,-10,10' # -> 'nombre,población,lowerBound,upperBound'
 
-datosAVOA = 'AVOA,15,-2,2'
+datosAVOA = 'AVOA,15,-2,2' # -> 'nombre,población,lowerBound,upperBound'
 paramAVOA = '0.9,0.5,0.7,2,3' # -> 'rp1,rp2,rp3,l,w'
 
 # -- EJECUCIÓN
 for i in range(repeticiones):
-    # -- Directorio
+    # - Directorio
     fecha = crearDirectorio(problema)
 
     if (problema == 'FS'):
