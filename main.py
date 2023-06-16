@@ -19,6 +19,7 @@ Parámetros:
 from Solver.solver import FeatureSelection
 from Solver.solver import BenchMark
 from Solver.solver import SetCoveringProblem
+from util import crearDirectorio
 
 # ----------------------------------------------------------------------------------- #
 # ---------------------------------- EXPERIMETOS ------------------------------------ #
@@ -27,38 +28,43 @@ from Solver.solver import SetCoveringProblem
 
 # --- Parámetros Experimento ---
 repeticiones = 1
-problema = 'SCP'
+problema = 'FS'
 
 # --- Parámetros Problema ---
 # - descomentar solo el correspondiente al problema a resolver
 
-## Feature Selection
-#instancia = 'ionosphere'
-#paramProblem = '10,3,0.99,S2,ELIT' # -> 'maxIter,k,gamma,funcTransferencia,tipoBinarización'
+# Feature Selection
+instancia = 'ionosphere' # -> ionosphere | hill-valley | Qsar | ARCENE
+paramProblem = '200,10,0.9999,V4,STD' # -> 'maxIter,k,gamma,funcTransferencia,tipoBinarización'
 
 ## Benchmark
 #instancia = 'F3'
 #paramProblem = '600,30' # -> 'maxIter,cantDimensiones'
 
-# SetCovering
-instancia = 'scp51'
-paramProblem = '20,V4,COM' # -> 'maxIter,funcTransferencia,tipoBinarización'
+## SetCovering
+#instancia = 'scp51'
+#paramProblem = '20,V4,COM' # -> 'maxIter,funcTransferencia,tipoBinarización'
 
 # --- Parámetros Metaheurísticas ---
-datosMFO = 'MFO,15,-1,1'
+datosMFO = 'MFO,5,-1,1'
 
-datosAVOA = 'AVOA,15,-5,5'
-paramAVOA = '0.9,0.9,0.9,2,3' # -> 'rp1,rp2,rp3,l,w'
+datosAVOA = 'AVOA,15,-1,1'
+paramAVOA = '0.5,0.5,0.5,2,10' # -> 'rp1,rp2,rp3,l,w'
+
+# -- Directorio
+fecha = crearDirectorio()
 
 # -- EJECUCIÓN
 for i in range(repeticiones):
     if (problema == 'FS'):
-        FeatureSelection(instancia, datosMFO, '', paramProblem) # MFO
-        #FeatureSelection(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+        FeatureSelection(instancia, datosMFO, '', paramProblem, fecha) # MFO
+        #FeatureSelection(instancia, datosAVOA, paramAVOA, paramProblem, fecha) # AVOA
     if (problema == 'BM'):
-        #BenchMark(instancia, datosMFO, '', paramProblem) # MFO
-        BenchMark(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+        #BenchMark(instancia, datosMFO, '', paramProblem, fecha) # MFO
+        BenchMark(instancia, datosAVOA, paramAVOA, paramProblem, fecha) # AVOA
     if (problema == 'SCP'):
-        #SetCoveringProblem(instancia, datosMFO, '', paramProblem) # MFO
-        SetCoveringProblem(instancia, datosAVOA, paramAVOA, paramProblem) # AVOA
+        #SetCoveringProblem(instancia, datosMFO, '', paramProblem, fecha) # MFO
+        SetCoveringProblem(instancia, datosAVOA, paramAVOA, paramProblem, fecha) # AVOA
+
+# -------------------
 

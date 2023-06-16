@@ -20,6 +20,7 @@ from FeatureSelection.FSproblem import FeatureSelection
 from Metaheuristicas.MFO import MothFlame
 from Metaheuristicas.AVOA import AfricanVultures
 from Metaheuristicas.Binarizacion import binarizacion
+from Solver.diversidad import porcentajesXPLXPT, diversidadHussain
 
 
 def solverFS(instancia, datosMH, paramMH, paramFS):
@@ -51,6 +52,8 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     clases = ins.getClases()
     print("Instancia leída.")
 
+    print(datos)
+
     # - instanciar límites (mismo valor)
     dim = len(datos.columns)      # dimensión del problema
     if not isinstance(lb, list):
@@ -72,6 +75,7 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     # - primera población (todas las características)
     poblacion = np.ones((pop, dim))
     print("Primera población generada (aleatoria).")
+    maxDiversidad = diversidadHussain(poblacion)
 
     # - fitness de la primera población
     for i in range(pop):
@@ -130,6 +134,12 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
     # inicializar curva de convergencia
     convergenceCurve = np.zeros(shape=(maxIter))
 
+    # Inicializar grafico de exploración vs explotación
+    graficoExpl = np.zeros(shape=(maxIter,2))
+
+    # Inicializar graficos de performance
+    graficoPerf = np.zeros(shape=(7,maxIter))
+
     # Iteración principal
     for iteration in range(maxIter):
         print("\n- Iteración " + str(iteration+1) + " -")
@@ -187,11 +197,33 @@ def solverFS(instancia, datosMH, paramMH, paramFS):
         print("Mejor fitness de la iteración: " + str(fitness[bestIndex]))
         print("Mejor fitness histórico: " + str(bestFitness))
 
+        # calcular diversidad y porcentajes XPL XPT de la iteración
+        divIter = diversidadHussain(poblacion)
+
+        if maxDiversidad < divIter:
+            maxDiversidad = divIter
+
+        XPL , XPT, state = porcentajesXPLXPT(divIter, maxDiversidad)
+
+        # guardar para el gráfico
+        graficoExpl[iteration][0] = XPL
+        graficoExpl[iteration][1] = XPT
+
+        # curva de convergencia
         convergenceCurve[iteration] = bestFitness
+
+        # graficos de performance
+        graficoPerf[0][iteration] = accuracy[bestIndex]
+        graficoPerf[1][iteration] = f1Score[bestIndex]
+        graficoPerf[2][iteration] = precision[bestIndex]
+        graficoPerf[3][iteration] = recall[bestIndex]
+        graficoPerf[4][iteration] = mcc[bestIndex]
+        graficoPerf[5][iteration] = errorRate[bestIndex]
+        graficoPerf[6][iteration] = totalSelected[bestIndex]
 
     time2 = time.time()
     tiempoEjec = time2 - time1
     
     performance = [bestAccuracy,bestF1Score,bestPrecision,bestRecall,bestMcc,bestErrorRate,bestTFS,tiempoEjec]
 
-    return bestFitness, bestSolution, performance, convergenceCurve
+    return bestFitness, bestSolution, performance, convergenceCurve, graficoExpl, graficoPerf

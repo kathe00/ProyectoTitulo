@@ -31,8 +31,8 @@ class Instancia:
         if instancia == 'ionosphere':
             
             # leemos la instancia
-            instancia = instancia + ".data"
-            dataset = pd.read_csv('./FeatureSelection/Instancias/' + instancia, header=None)
+            instancia = "ionosphere.data"
+            dataset = pd.read_csv('./FeatureSelection/Instancias/Ionosphere/' + instancia, header=None)
 
             # separamos las clases de los datos (última columna de cada fila)
             cantAtributos = 34
@@ -52,39 +52,62 @@ class Instancia:
             self.clases = clases
             self.datos = datos
 
+        elif instancia == 'hill-valley':
+
+            instancia = "Hill-Valley-without-noise.data"
+            dataset = pd.read_csv('./FeatureSelection/Instancias/HillValley/' + instancia, header=None)
+
+            cantAtributos = 101
+            clases = dataset.iloc[:,cantAtributos-1]
+            clases = clases.values # clases binarias
+            datos = dataset.drop(dataset.columns[cantAtributos-1],axis='columns')
+
+            # guardamos la instancia
+            self.clases = clases
+            self.datos = datos
             
-"""
-        if instancia == 'ionosphere':
-            instancia = instancia + ".data"
-            classPosition = 34
-            dataset = pd.read_csv('Problem/FS/Instances/' + instancia, header=None)
-            clases = dataset.iloc[:,classPosition] 
+        elif instancia == 'Qsar':
+
+            instancia = "qsar_androgen_receptor.csv"
+            dataset = pd.read_csv('./FeatureSelection/Instancias/Qsar/' + instancia, header=None, sep=';')
+            print(dataset)
+
+            cantAtributos = 1024
+            clases = dataset.iloc[:,cantAtributos]
             clases = clases.replace({
-                'b':0,
-                'g':1
+                'negative':0,
+                'positive':1
+            })
+            clases = clases.values 
+            datos = dataset.drop(dataset.columns[cantAtributos],axis='columns')
+
+            # guardamos la instancia
+            self.clases = clases
+            self.datos = datos
+
+        elif instancia == 'ARCENE':
+
+            # juntamos los archvos de train y valid
+            aux_dataset = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_train.data', header=None, sep=' ')
+            aux_dataset2 = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_valid.data', header=None, sep=' ')
+            dataset = pd.concat([aux_dataset,aux_dataset2])
+            
+            # quitamos la columna final (NaN)
+            cantAtributos = 10000
+            dataset = dataset.drop(dataset.columns[cantAtributos],axis='columns')
+
+            # leemos las clases
+            aux_clases = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_train.labels', header=None, sep=' ')
+            aux_clases2 = pd.read_csv('./FeatureSelection/Instancias/ARCENE/arcene_valid.labels', header=None, sep=' ')
+            clases = pd.concat([aux_clases,aux_clases2])
+
+            clases = clases.iloc[:,0]
+            clases = clases.replace({
+                '-1':0,
+                '1':1
             })
             clases = clases.values
 
-            datos = dataset.drop(dataset.columns[classPosition],axis='columns')
-
-        elif instancia == 'sonar':
-            instancia = instancia+".all-data"
-            classPosition = 60
-            dataset = pd.read_csv('Problem/FS/Instances/'+instancia, header=None)
-            clases = dataset.iloc[:,classPosition]
-            clases = clases.replace({
-                'R':0,
-                'M':1
-            })
-            clases = clases.values
-
-            datos = dataset.drop(dataset.columns[classPosition],axis='columns')
-            
-        elif instancia == 'Hill-Valley-with-noise.data' or instancia == 'Hill-Valley-without-noise.data':
-            classPosition = 100
-            dataset = pd.read_csv('Problem/FS/Instancias/'+instancia, header=None)
-            clases = dataset.iloc[:,classPosition]
-            clases = clases.values
-
-            datos = dataset.drop(dataset.columns[classPosition],axis='columns')
-"""
+            # guardamos la instancia
+            self.clases = clases
+            self.datos = dataset
